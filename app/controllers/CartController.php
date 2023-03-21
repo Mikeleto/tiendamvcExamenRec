@@ -33,12 +33,12 @@ class CartController extends Controller
         }
     }
 
-    public function addProduct($product_id, $user_id, $price)
+    public function addProduct($product_id, $user_id)
     {
         $errors = [];
 
-        if ($this->model->verifyProduct($product_id, $user_id , $price) == false) {
-            if ($this->model->addProduct($product_id, $user_id, $price) == false) {
+        if ($this->model->verifyProduct($product_id, $user_id) == false) {
+            if ($this->model->addProduct($product_id, $user_id) == false) {
                 array_push($errors, 'Error al insertar el producto en el carrito');
             }
         }
