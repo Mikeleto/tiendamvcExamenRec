@@ -1,4 +1,5 @@
 <?php include_once(VIEWS . 'header.php') ?>
+
 <div class="card" id="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -13,31 +14,19 @@
         <p>Por favor, elija la forma de pago</p>
     </div>
     <div class="card-body">
+
         <form action="<?= ROOT ?>cart/verify/" method="POST">
-            <div class="form-group text-left">
-                <div class="radio">
-                    <label><input type="radio" name="payment" value="cc1"> Tarjeta de crédito MasterCard</label>
+            <?php foreach ($data['dor'] as $user): ?>
+                <div class="form-group text-left">
+                    <div class="radio">
+                        <label><input type="radio" name="payment" value=" <?= $user->name ?>" > <?= $user->name ?></label>
+                    </div>
                 </div>
-                <div class="radio">
-                    <label><input type="radio" name="payment" value="cc2"> Tarjeta de crédito Visa</label>
-                </div>
-                <div class="radio">
-                    <label><input type="radio" name="payment" value="dc"> Tarjeta de débito</label>
-                </div>
-                <div class="radio">
-                    <label><input type="radio" name="payment" value="cash"> Efectivo</label>
-                </div>
-                <div class="radio">
-                    <label><input type="radio" name="payment" value="paypal"> Paypal</label>
-                </div>
-                <div class="radio">
-                    <label><input type="radio" name="payment" value="bitcoins"> Bitcoins</label>
-                </div>
-            </div>
+            <?php endforeach; ?>
             <div class="form-group text-left">
                 <input type="submit" value="Enviar datos" class="btn btn-success">
             </div>
+
         </form>
     </div>
-</div>
 <?php include_once(VIEWS . 'footer.php') ?>

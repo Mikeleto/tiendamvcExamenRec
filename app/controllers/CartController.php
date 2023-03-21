@@ -103,10 +103,14 @@ class CartController extends Controller
 
     public function paymentmode()
     {
+        $session = new Session();
+        $user = $session->getUser();
+        $this->model->getPayments($user);
         $data = [
             'titulo' => 'Carrito | Forma de pago',
             'subtitle' => 'Checkout | Forma de pago',
             'menu' => true,
+            'dor' => $user,
         ];
 
         $this->view('carts/paymentmode', $data);

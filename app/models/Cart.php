@@ -28,9 +28,14 @@ class Cart
         $query = $this->db->prepare($sql);
         $query->execute([':id' => $product_id]);
         $product = $query->fetch(PDO::FETCH_OBJ);
+        $sql2 = 'SELECT * FROM payments WHERE id=:id';
+        $query2 = $this->db->prepare($sql);
+        $query2->execute([':id' => $product_id]);
+        $cart = $query->fetch(PDO::FETCH_OBJ);
+        $pay = $cart->payment_id;
         $price= $product->price;
-        $sql2 = 'INSERT INTO carts(state, user_id, product_id, quantity,price, discount, send, date)
-                 VALUES (:state, :user_id, :product_id, :quantity,:price, :discount, :send, :date)';
+        $sql2 = 'INSERT INTO carts(state, user_id, product_id, quantity,price, discount, send, date, payment_id)
+                 VALUES (:state, :user_id, :product_id, :quantity,:price, :discount, :send, :date, :payment_id)';
         $query2 = $this->db->prepare($sql2);
         $params2 = [
             ':state' => 0,
@@ -41,6 +46,7 @@ class Cart
             ':discount' => $product->discount,
             ':send' => $product->send,
             ':date' => date('Y-m-d H:i:s'),
+            ':payment_id' => $pay,
         ];
         $query2->execute($params2);
         return $query2->rowCount();
@@ -94,5 +100,15 @@ class Cart
             ':date' => date('Y-m-d H:i:s'),
         ];
         return $query->execute($params);
+    }
+
+
+    public function getPayments()
+    {
+        $sql = 'SELECT * FROM payments WHERE deleted = 0';
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_OBJ);
     }
 }

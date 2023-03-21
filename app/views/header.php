@@ -72,6 +72,9 @@
                 <li class="nav-item">
                     <a href="<?= ROOT ?>adminProduct" class="nav-link">Productos</a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?= ROOT ?>adminShop/payMode" class="nav-link">Metodos de pago</a>
+                </li>
             </ul>
         <?php endif; ?>
     </div>
