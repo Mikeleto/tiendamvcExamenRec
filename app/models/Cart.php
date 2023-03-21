@@ -11,7 +11,7 @@ class Cart
 
     public function verifyProduct($product_id, $user_id)
     {
-        $sql = 'SELECT * FROM carts WHERE product_id=:product_id AND user_id=:user_id';
+        $sql = 'SELECT * FROM carts WHERE product_id=:product_id AND user_id=:user_id AND state=0';
         $query = $this->db->prepare($sql);
         $params = [
             ':product_id' => $product_id,
@@ -28,15 +28,17 @@ class Cart
         $query = $this->db->prepare($sql);
         $query->execute([':id' => $product_id]);
         $product = $query->fetch(PDO::FETCH_OBJ);
+        $price = $product->price;
 
-        $sql2 = 'INSERT INTO carts(state, user_id, product_id, quantity, discount, send, date)
-                 VALUES (:state, :user_id, :product_id, :quantity, :discount, :send, :date)';
+        $sql2 = 'INSERT INTO carts(state, user_id, product_id, quantity,price, discount, send, date)
+                 VALUES (:state, :user_id, :product_id, :quantity,:price, :discount, :send, :date)';
         $query2 = $this->db->prepare($sql2);
         $params2 = [
             ':state' => 0,
             ':user_id' => $user_id,
             ':product_id' => $product_id,
             ':quantity' => 1,
+            ':price' => $price,
             ':discount' => $product->discount,
             ':send' => $product->send,
             ':date' => date('Y-m-d H:i:s'),
@@ -92,5 +94,14 @@ class Cart
             ':state' => $state,
         ];
         return $query->execute($params);
+    }
+
+    public function getProduct()
+    {
+        $sql = 'SELECT * FROM products WHERE deleted=0';
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_OBJ);
     }
 }
