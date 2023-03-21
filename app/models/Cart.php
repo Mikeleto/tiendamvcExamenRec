@@ -28,8 +28,7 @@ class Cart
         $query = $this->db->prepare($sql);
         $query->execute([':id' => $product_id]);
         $product = $query->fetch(PDO::FETCH_OBJ);
-        $price = $product->price;
-
+        $price= $product->price;
         $sql2 = 'INSERT INTO carts(state, user_id, product_id, quantity,price, discount, send, date)
                  VALUES (:state, :user_id, :product_id, :quantity,:price, :discount, :send, :date)';
         $query2 = $this->db->prepare($sql2);
@@ -94,14 +93,5 @@ class Cart
             ':state' => $state,
         ];
         return $query->execute($params);
-    }
-
-    public function getProduct()
-    {
-        $sql = 'SELECT * FROM products WHERE deleted=0';
-        $query = $this->db->prepare($sql);
-        $query->execute();
-
-        return $query->fetchAll(PDO::FETCH_OBJ);
     }
 }
